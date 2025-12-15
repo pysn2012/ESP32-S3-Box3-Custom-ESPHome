@@ -23,6 +23,15 @@ jobs:
         with:
           python-version: '3.11'
 
+      # 在 "Install ESPHome" 步骤之后，"Build firmware" 步骤之前添加
+      - name: Generate secrets.yaml from GitHub Secrets
+        run: |
+          # 根据仓库 Secrets 生成 secrets.yaml
+          echo "wifi_ssid: '${{ secrets.WIFI_SSID }}'" > secrets.yaml
+          echo "wifi_password: '${{ secrets.WIFI_PASSWORD }}'" >> secrets.yaml
+          # 如果有其他 secret（如 mqtt 密码等），继续添加
+          # echo "mqtt_password: '${{ secrets.MQTT_PASSWORD }}'" >> secrets.yaml
+
       - name: Install ESPHome
         run: |
           python -m pip install --upgrade pip
